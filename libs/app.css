@@ -48,6 +48,16 @@ body {
     color: #fff;
 }
 
+.customer-forms {
+    margin: 0 auto;
+    width: 18rem;
+}
+
+.customer-forms .pure-form-stacked input {
+    margin: .8rem 0;
+    width: 100%;
+}
+
 .note {
     margin: 20px;
     width: 280px;

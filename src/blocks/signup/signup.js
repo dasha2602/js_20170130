@@ -1,4 +1,5 @@
 import template from './signup.xml.js';
+import User from '../../models/user';
 
 export default class Signup {
     constructor(node) {
@@ -6,7 +7,7 @@ export default class Signup {
         this.render();
         this.cache();
         this.events();
-        this.node.hidden = true;
+        this.initForm();
     }
 
     render() {
@@ -28,51 +29,28 @@ export default class Signup {
     }
 
     cache() {
-        this.formName = 'formSingup';
+        this.form = document.forms.formSingup;
     }
 
     events() {
-        document.querySelector('.js-signup-view').addEventListener('submit', this.submit.bind(this));
+        this.form.addEventListener('submit', this.submit.bind(this));
+    }
+
+    initForm() {
+        this.node.hidden = true;
+        this.model = new User(this.form.getAttribute('action'));
     }
 
     submit(ev) {
         const form = ev.target;
-        const url = form.getAttribute('action');
-
-        if (form.getAttribute('name') !== this.formName) {
-            return;
-        }
 
         ev.preventDefault();
 
-        const xhr = new XMLHttpRequest();
-        const data = JSON.stringify({
-            email: form.email.value,
-            login: form.login.value,
-            password: form.password.value
-        });
-
-        xhr.open('POST', url, true);
-        xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-
-        xhr.addEventListener('readystatechange', () => {
-            if (xhr.readyState !== 4) {
-                return;
-            }
-
-            if (xhr.status !== 200) {
-                alert(xhr.status + ': ' + xhr.statusText);
-            } else {
-                const response = JSON.parse(xhr.responseText);
+        this.model.signup(form.login.value, form.password.value, form.email.value)
+            .then((response) => {
                 alert(response.message);
-
-                if (response.status === 'success') {
-                    const event = new CustomEvent('user.login');
-                    document.body.dispatchEvent(event);
-                }
-            }
-        });
-
-        xhr.send(data);
+            }, (error) => {
+                alert(`${error.status}: ${error.statusText}`);
+            });
     }
 }

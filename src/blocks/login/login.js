@@ -7,9 +7,7 @@ export default class Login {
         this.render();
         this.cache();
         this.events();
-        this.node.hidden = true;
-
-        this.model = new User('//test.com');
+        this.initForm();
     }
 
     render() {
@@ -30,29 +28,28 @@ export default class Login {
     }
 
     cache() {
-        this.formName = 'formLogin';
+        this.form = document.forms.formLogin;
     }
 
     events() {
-        document.querySelector('.js-login-view').addEventListener('submit', this.submit.bind(this));
+        this.form.addEventListener('submit', this.submit.bind(this));
+    }
+
+    initForm() {
+        this.node.hidden = true;
+        this.model = new User(this.form.getAttribute('action'));
     }
 
     submit(ev) {
         const form = ev.target;
-        const url = form.getAttribute('action');
-
-        if (form.getAttribute('name') !== this.formName) {
-            return;
-        }
 
         ev.preventDefault();
 
-        this.model.login({
-            login: form.login.value,
-            password: form.password.value
-        }).then(function () {
-           console.log('ok');
-        });
-
+        this.model.login(form.login.value, form.password.value)
+            .then((response) => {
+                alert(response.message);
+            }, (error) => {
+                alert(`${error.status}: ${error.statusText}`);
+            });
     }
 }

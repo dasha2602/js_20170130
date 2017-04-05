@@ -6,7 +6,6 @@ import NotesList from '../notesList/notesList';
 import Cookies from 'js-cookie';
 import Router from '../../modules/router';
 
-
 const data = [{
     header: 'Заметка 1',
     text: 'Текст заметки 1',
@@ -34,11 +33,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const router = new Router(document.body);
     const user = Cookies.get('user');
 
-    router.register('/signin', new Login(document.querySelector('.js-login-view')));
-    router.register('/signup', new Signup(document.querySelector('.js-signup-view')));
-    router.register('/notes/{type}', function (event) {
-        console.log(event.routeData.type);
-    });
+    if (user) {
+        router.register('/logout', new Logout(document.querySelector('.js-logout-view')));
+        // initNotesList();
+    } else {
+        router.register('/signin', new Login(document.querySelector('.js-login-view')));
+        router.register('/signup', new Signup(document.querySelector('.js-signup-view')));
+        router.register('/notes/{type}', (event) => {
+            console.log(event.routeData.type);
+        });
+    }
 
     router.start();
+    router.events();
 });

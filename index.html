@@ -14,28 +14,20 @@
 <header id="header" class="header">
     <div class="container header__i">
         <span class="header-logo"> Learn JS</span>
-        <div class="container header-links js-logout-view"></div>
+        <div class="container header-links js-logout-view">
+            <a href="/signin" class="header-links__item">Вход</a>
+            <a href="/signup" class="header-links__item">Регистрация</a>
+        </div>
     </div>
 </header>
 
 <div class="container">
-    <div class="pure-g js-forms">
-        <div class="pure-u-1-2">
-            <div class="l-box">
-                <div class="view js-login-view"></div>
-            </div>
+    <div class="customer-forms js-forms">
+        <div class="customer-forms__i">
+            <div class="view js-login-view"></div>
+            <div class="view js-signup-view"></div>
         </div>
-
-        <div class="pure-u-1-2 sign-up-block">
-            <div class="l-box">
-                <div class="view js-signup-view"></div>
-            </div>
-        </div>
-
     </div>
-
-    <a href="/signup">Регистрация</a>
-    <a href="/signin">Авторизация</a>
 
     <div class="view js-notes-list"></div>
 
